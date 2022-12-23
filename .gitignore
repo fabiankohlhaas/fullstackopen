@@ -2,4 +2,6 @@
 /part0/01-to-03-mdn-web-basics 
 
 # dependencies
-**/node_modules
+/**/node_modules/
+node_modules/
+/home/fkohlhaas/01 Hot/fullstackopen/part1/courseinfo/node_modules
