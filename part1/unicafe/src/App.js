@@ -8,7 +8,7 @@ const Display = ({ text, value }) => (
   </div>
 )
 
-const Calculation = ({ text, value }) => {
+const Statistics = ({ text, value }) => {
   if (value) {
     return (
       <div>
@@ -41,11 +41,11 @@ const App = () => {
       <Display text={"neutral"} value={neutral} />
       <Display text={"bad"} value={bad} />
       <Display text={"all"} value={good + neutral + bad} />
-      <Calculation
+      <Statistics
         text={"average"}
         value={(good - bad) / (good + neutral + bad)}
       />
-      <Calculation
+      <Statistics
         text={"positive"}
         value={(good / (good + neutral + bad)) * 100}
       />
