@@ -1,6 +1,8 @@
+// To import the Course component from the components folder
 import Course from './components/Course'
 
 const App = () => {
+  // Variable that contains the information of a course
   const course = {
     id: 1,
     name: 'Half Stack application development',
@@ -23,6 +25,7 @@ const App = () => {
     ]
   }
 
+  // To display the return value of the Course component
   return <Course course={course} />
 }
 
