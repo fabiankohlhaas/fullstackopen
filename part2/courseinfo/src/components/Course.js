@@ -1,5 +1,5 @@
 // To display the Header of a course.
-const Header = ({ name }) => <h1>{name}</h1>
+const Header = ({ name }) => <h2>{name}</h2>
 
 
 // To display the parts of a course, this component is used with the map function of the content component.
