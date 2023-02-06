@@ -77,7 +77,7 @@ The following steps are necessary to run the projects.
 
 ### Prerequisites
 
-Install [Node.js](https://nodejs.org/en/)
+Install [Node.js](https://nodejs.org/en/) version 16.13.2 or higher:
 
 * Ubuntu:
 
