@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import Entry from './components/Entry'
+import Searchbar from './components/Searchbar'
+import InputField from './components/InputField'
+import AllEntries from './components/AllEntries'
 
 const App = () => {
   // State that contains an array with the phonebooks entrys.
@@ -74,26 +76,17 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <div>
-        filter shown with: <input value={nameFilter} onChange={handleFilterInput}/>
-      </div>
+      <Searchbar value={nameFilter} onChange={handleFilterInput}/>
       <h2>Add a new</h2>
       <form onSubmit={addInput}>
-        <div>
-          name: <input value={newName} onChange={handleNameInput} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberInput} />
-        </div>
+        <InputField name={'name:'} value={newName} onChange={handleNameInput} />
+        <InputField name={'number: '} value={newNumber} onChange={handleNumberInput} />
         <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
-      <div>
-        {personsToShow.map(entry =>
-        <Entry key={entry.name + entry.number} entry={entry}/>)}
-      </div>
+      <AllEntries persons={personsToShow}/>
     </div>
   )
 }
