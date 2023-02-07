@@ -14,6 +14,15 @@ const App = () => {
   // content for every new input
   const [newName, setNewName] = useState('')
 
+  // Function to check if a value (name) is already in the persons array
+  const objectInPersons = (object) =>
+    // The some() method works similar to the find() method, but returns a boolean
+    // instead of the found object: 
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+    // JSON.stringify is used to compare the two objects without false results
+    // More on this here: https://www.joshbritz.co/posts/why-its-so-hard-to-check-object-equality/
+    persons.some(p => JSON.stringify(p) === JSON.stringify(object))
+    
   // Function to control the submit behavior of the input element.
   const addName = (event) => {
     // Prevents the default action of submitting a form
@@ -22,10 +31,21 @@ const App = () => {
     const phoneBookObject = {
       name: newName
     }
-    // Used to create a copy of the persons array and add the new
-    // entry to it. THEN the COPY is used to update the stat. 
-    // DO NOT MUTATE STATE DIRECTLY!
-    setPersons(persons.concat(phoneBookObject))
+
+    // Conditional as a ternary operator instead of a if else statement
+    // ObjectInPersons returns either true or false
+    // The expression after the queston mark is executet if true
+    // The expression after the collon is executed if false
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
+    objectInPersons(phoneBookObject)
+      // The alert uses a Template string, similiar to an f string in python
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+      ? alert(`${phoneBookObject.newName} is already added to phonebook`)
+      // Used to create a copy of the persons array and add the new
+      // entry to it. THEN the COPY is used to update the stat. 
+      // DO NOT MUTATE STATE DIRECTLY!
+      : setPersons(persons.concat(phoneBookObject))
+
     // Resets the value of the input field to an empty string
     setNewName('')
   }
