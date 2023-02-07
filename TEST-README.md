@@ -7,13 +7,14 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <!-- <a href="https://github.com/fabiankohlhaas/fullstackopen">
-    <img src="images/fso.png" alt="Logo" width="340" height="300">
-  </a> -->
+  <a href="https://github.com/fabiankohlhaas/fullstackopen">
+    <img src="images/logo.png" alt="Logo" width="125" height="125">
+  </a>
 <h1 align="center">Full Stack Open</h1>
 
   <!-- <p align="center">
-    Repository with my submissions to the University of Helsinkis Full Stack Open Course. -->
+    Repository with my submissions to the University of Helsinkis Full Stack Open 
+    Course. -->
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -42,9 +43,13 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This repository contains my submissions for the [Full Stack Open](https://fullstackopen.com/en/) course from the [University of Helsinki](https://www.helsinki.fi/en).
+This repository contains my submissions for the [Full Stack Open](https://fullstackopen.com/en/)
+course from the [University of Helsinki](https://www.helsinki.fi/en).
 
-The course teaches React, Redux, Node.js, MongoDB, GraphQL and TypeScript. It is an introduction to modern JavaScript-based web development. It focuses on building single page applications with ReactJS that use REST APIs built with Node.js.
+The course teaches React, Redux, Node.js, MongoDB, GraphQL and TypeScript.
+It is an introduction to modern JavaScript-based web development.
+It focuses on building single page applications with ReactJS that use REST APIs
+built with Node.js.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -91,12 +96,15 @@ Install [Node.js](https://nodejs.org/en/) version 16.13.2 or higher:
   brew install node
   ```
 
-* Windows
-  Download the [Windows Installer](https://nodejs.org/en/#home-downloadhead) from [nodejs.org](https://nodejs.org)
+* Windows:
+  
+  Download the [Windows Installer](https://nodejs.org/en/#home-downloadhead)
+  from [nodejs.org](https://nodejs.org)
 
 ### Installation
 
-1. Navigate to the folder of the project you'd like to look at in your terminal, for Example:
+1. Navigate to the folder of the project you'd like to look at in your terminal,
+   for Example:
 
    ```sh
    cd /YOUR-PARRENT-FOLDERS/fullstackopen/part1/anecdotes
