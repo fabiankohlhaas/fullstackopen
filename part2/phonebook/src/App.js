@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import Searchbar from './components/Searchbar'
 import InputField from './components/InputField'
 import AllEntries from './components/AllEntries'
@@ -6,12 +7,18 @@ import AllEntries from './components/AllEntries'
 const App = () => {
   // State that contains an array with the phonebooks entrys.
   // setPersons updates the state with new entrys
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ]) 
+  const [persons, setPersons] = useState([]) 
+
+  // To fetch the date from a local JSON - server using effect hook: https://reactjs.org/docs/hooks-effect.html
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+      })
+  }, [])
 
   // Other necessary state hooks [variable, setVariable]
   const [newName, setNewName] = useState('')

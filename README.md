@@ -110,11 +110,40 @@ Install [Node.js](https://nodejs.org/en/) version 16.13.2 or higher:
    cd /YOUR-PARRENT-FOLDERS/fullstackopen/part1/anecdotes
    ```
 
-2. Run the following command
+2. Run the followin command
+
+   ```sh
+   npm install
+   ```
+
+3. Start the application
 
    ```sh
    npm start
    ```
+
+### Installing a local JSON Server
+
+Some projects require a local JSON server to work. To install a JSON server,
+use one of  the following commands.
+
+* Global Server:
+
+  ```sh
+  npm install -g json-server
+  ```
+
+* Start:
+
+  ```sh
+  json-server --port 3001 --watch db.json
+  ```
+
+* Start a local Server in the project directory without global installation:
+
+  ```sh
+  npx json-server --port 3001 --watch db.json
+  ```
 
 <!-- CONTACT -->
 ## Contact
