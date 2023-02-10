@@ -4,7 +4,7 @@ const AllEntries = ({persons}) => {
     return (
         <div>
         {persons.map(entry =>
-        <Entry key={entry.name + entry.number} entry={entry}/>)}
+        <Entry key={entry.id} entry={entry}/>)}
       </div>
     )
 }

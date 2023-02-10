@@ -24,6 +24,16 @@
       "name": "Fabian Kohlhaas",
       "number": "1234",
       "id": 5
+    },
+    {
+      "name": "Irina Kohlhaas",
+      "number": "4321",
+      "id": 6
+    },
+    {
+      "name": "Tom Müller",
+      "number": "1234",
+      "id": 7
     }
   ]
 }

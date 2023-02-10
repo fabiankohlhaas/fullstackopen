@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import entryService from './services/entries'
 import Searchbar from './components/Searchbar'
 import InputField from './components/InputField'
 import AllEntries from './components/AllEntries'
@@ -9,12 +9,11 @@ const App = () => {
   // setPersons updates the state with new entrys
   const [persons, setPersons] = useState([])
 
-  // To fetch the date from a local JSON - server using effect hook: https://reactjs.org/docs/hooks-effect.html
+  // To fetch the data from a local JSON - server using effect hook: https://reactjs.org/docs/hooks-effect.html
+  // The communication with the backend is done via the entries.js module.
   useEffect(() => {
-    console.log('effect')
-    axios.get('http://localhost:3001/persons').then(response => {
-      console.log('promise fulfilled')
-      setPersons(response.data)
+    entryService.getAll().then(initialEntrys => {
+      setPersons(initialEntrys)
     })
   }, [])
 
@@ -30,7 +29,17 @@ const App = () => {
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
   // JSON.stringify is used to compare the two objects without false results
   // More on this here: https://www.joshbritz.co/posts/why-its-so-hard-to-check-object-equality/
-  const objectInPersons = object => persons.some(p => JSON.stringify(p) === JSON.stringify(object))
+  // const objectInPersons = object => persons.some(p => JSON.stringify(p) === JSON.stringify(object))
+
+  const objectInPersons = object => {
+    const filteredPersons = persons.filter(person => {
+      return person.name === newName && person.number === object.number
+    }).length
+
+    let result = false
+    filteredPersons > 0 ? (result = true) : (result = false)
+    return result
+  }
 
   // Function to control the submit behavior of the input element.
   // prventDefault prevents the default action of submitting a form
@@ -41,8 +50,7 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    
-    // Conditional as a ternary operator instead of a if else statement
+
     // ObjectInPersons returns either true or false
     // The expression after the queston mark is executet if true
     // The expression after the collon is executed if false
@@ -52,27 +60,19 @@ const App = () => {
     // set Persons is used to create a copy of the persons array and add the new
     // entry to it. THEN the COPY is used to update the stat.
     // DO NOT MUTATE STATE DIRECTLY!
-
     if (objectInPersons(phoneBookObject)) {
       alert(
         `The combination of name: (${phoneBookObject.name}) and number: (${phoneBookObject.number}) has already been added to the phonebook`
       )
     } else {
       // To send the phoneBookObject to the JSON-Server
-      axios.post('http://localhost:3001/persons', phoneBookObject).then(response => {
-      console.log(response)
+      entryService.create(phoneBookObject).then(returnedPhoneBookObject => {
+        setPersons(persons.concat(returnedPhoneBookObject))
+        // To reset the values of the input fields to an empty string
+        setNewName('')
+        setNewNumber('')
       })
-      setPersons(persons.concat(phoneBookObject))
     }
-
-    // objectInPersons(phoneBookObject)
-    //   ? alert(
-    //       `The combination of name: (${phoneBookObject.name}) and number: (${phoneBookObject.number}) has already been added to the phonebook`
-    //     )
-    //   : setPersons(persons.concat(phoneBookObject))
-    // To reset the values of the input fields to an empty string
-    setNewName('')
-    setNewNumber('')
   }
 
   // Updates the content of theinput fields for every new entry
