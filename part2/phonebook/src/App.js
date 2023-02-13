@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import entryService from './services/entries'
 import Searchbar from './components/Searchbar'
 import InputField from './components/InputField'
-import AllEntries from './components/AllEntries'
+import Entry from './components/Entry'
 
 const App = () => {
   // State that contains an array with the phonebooks entrys.
@@ -91,6 +91,18 @@ const App = () => {
     ? persons
     : persons.filter(person => person.name.toLocaleLowerCase().startsWith(nameFilter.toLowerCase()))
 
+  const deleteTheEntry = id => {
+    const entry = persons.find(person => person.id === id)
+    window.confirm(`Delete ${entry.name}`)
+      ? entryService
+          .deleteEntry(id)
+          .then(setPersons(persons.filter(person => person != entry)))
+          .catch(error => {
+            alert(`the entry '${entry.name}' was already deleted from server`)
+          })
+      : console.log(`Deletion of ${entry.name} canceled`)
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
@@ -104,7 +116,15 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <AllEntries persons={personsToShow} />
+
+      {personsToShow.map(person => (
+        <Entry
+          key={person.id}
+          name={person.name}
+          number={person.number}
+          deleteEntry={() => deleteTheEntry(person.id)}
+        />
+      ))}
     </div>
   )
 }
