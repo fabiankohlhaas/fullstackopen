@@ -21,7 +21,6 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter, setFilter] = useState('')
-  const [showAll, setShowAll] = useState(true)
 
   // Function to check if a value (name) is already in the persons array
   // The some() method works similar to the find() method, but returns a boolean
@@ -31,9 +30,19 @@ const App = () => {
   // More on this here: https://www.joshbritz.co/posts/why-its-so-hard-to-check-object-equality/
   // const objectInPersons = object => persons.some(p => JSON.stringify(p) === JSON.stringify(object))
 
-  const objectInPersons = object => {
+  const nameInPersons = object => {
     const filteredPersons = persons.filter(person => {
-      return person.name === newName && person.number === object.number
+      return person.name === object.name
+    }).length
+
+    let result = false
+    filteredPersons > 0 ? (result = true) : (result = false)
+    return result
+  }
+
+  const numberInPersons = object => {
+    const filteredPersons = persons.filter(person => {
+      return person.number === object.number
     }).length
 
     let result = false
@@ -51,19 +60,24 @@ const App = () => {
       number: newNumber
     }
 
-    // ObjectInPersons returns either true or false
-    // The expression after the queston mark is executet if true
-    // The expression after the collon is executed if false
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
-    // The alert uses a Template string, similiar to an f string in python
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
-    // set Persons is used to create a copy of the persons array and add the new
-    // entry to it. THEN the COPY is used to update the stat.
-    // DO NOT MUTATE STATE DIRECTLY!
-    if (objectInPersons(phoneBookObject)) {
-      alert(
-        `The combination of name: (${phoneBookObject.name}) and number: (${phoneBookObject.number}) has already been added to the phonebook`
+    if (nameInPersons(phoneBookObject) && !numberInPersons(phoneBookObject)) {
+      const person = phoneBookObject.name
+      const id = persons.find(entry => entry.name === person).id
+      console.log('id that is given to update: ', id)
+      window.confirm(
+        `${person} is already added to phonebook, replace the old number with a new one?`
       )
+      entryService
+        .update(id, phoneBookObject)
+        .then(returnedPhoneBookObject => {
+          setPersons(persons.map(entry => (entry.id !== id ? entry : returnedPhoneBookObject)))
+        })
+        .catch(error => {
+          alert(`The person ${person} was already deleted from server`)
+          setPersons(persons.filter(entry => entry.id !== id))
+        })
+    } else if (nameInPersons(phoneBookObject) && numberInPersons(phoneBookObject)) {
+      alert(`The name: (${phoneBookObject.name})has already been added to the phonebook`)
     } else {
       // To send the phoneBookObject to the JSON-Server
       entryService.create(phoneBookObject).then(returnedPhoneBookObject => {
@@ -83,20 +97,22 @@ const App = () => {
   // there is any input i.e. the user choose a filter
   const handleFilterInput = event => {
     setFilter(event.target.value)
-    nameFilter === '' ? setShowAll(true) : setShowAll(false)
   }
 
   // To select which entrys are to be shown. filter compares each persons name to nameFilter
-  const personsToShow = showAll
-    ? persons
-    : persons.filter(person => person.name.toLocaleLowerCase().startsWith(nameFilter.toLowerCase()))
+  const personsToShow =
+    nameFilter.length === 0
+      ? persons
+      : persons.filter(person =>
+          person.name.toLocaleLowerCase().startsWith(nameFilter.toLowerCase())
+        )
 
   const deleteTheEntry = id => {
     const entry = persons.find(person => person.id === id)
     window.confirm(`Delete ${entry.name}`)
       ? entryService
           .deleteEntry(id)
-          .then(setPersons(persons.filter(person => person != entry)))
+          .then(setPersons(persons.filter(person => person !== entry)))
           .catch(error => {
             alert(`the entry '${entry.name}' was already deleted from server`)
           })
