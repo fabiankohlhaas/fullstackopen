@@ -22,8 +22,18 @@
     },
     {
       "name": "fabian",
-      "number": "45",
+      "number": "232323",
       "id": 5
+    },
+    {
+      "name": "Torsten",
+      "number": "1988898",
+      "id": 6
+    },
+    {
+      "name": "Klaus",
+      "number": "80908",
+      "id": 7
     }
   ]
 }

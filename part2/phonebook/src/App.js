@@ -3,6 +3,7 @@ import entryService from './services/entries'
 import Searchbar from './components/Searchbar'
 import InputField from './components/InputField'
 import Entry from './components/Entry'
+import Notification from './components/Notification'
 
 const App = () => {
   // State that contains an array with the phonebooks entrys.
@@ -21,6 +22,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter, setFilter] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
 
   // Function to check if a value (name) is already in the persons array
   // The some() method works similar to the find() method, but returns a boolean
@@ -76,12 +78,29 @@ const App = () => {
           alert(`The person ${person} was already deleted from server`)
           setPersons(persons.filter(entry => entry.id !== id))
         })
+        setSuccessMessage(
+          `Changed the Number of ${phoneBookObject.name} to ${phoneBookObject.number}`
+        )
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 3000);
+        setNewName('')
+        setNewNumber('')
     } else if (nameInPersons(phoneBookObject) && numberInPersons(phoneBookObject)) {
       alert(`The name: (${phoneBookObject.name})has already been added to the phonebook`)
+      setNewName('')
+      setNewNumber('')
     } else {
       // To send the phoneBookObject to the JSON-Server
       entryService.create(phoneBookObject).then(returnedPhoneBookObject => {
         setPersons(persons.concat(returnedPhoneBookObject))
+
+        setSuccessMessage(
+          `Added ${phoneBookObject.name}`
+        )
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 3000);
         // To reset the values of the input fields to an empty string
         setNewName('')
         setNewNumber('')
@@ -122,6 +141,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={successMessage} />
       <Searchbar value={nameFilter} onChange={handleFilterInput} />
       <h2>Add a new</h2>
       <form onSubmit={addInput}>
