@@ -3,7 +3,8 @@ import entryService from './services/entries'
 import Searchbar from './components/Searchbar'
 import InputField from './components/InputField'
 import Entry from './components/Entry'
-import Notification from './components/Notification'
+import SuccessMessage from './components/SuccessMessage'
+import ErrorMessage from './components/ErrorMessage'
 
 const App = () => {
   // State that contains an array with the phonebooks entrys.
@@ -23,6 +24,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter, setFilter] = useState('')
   const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   // Function to check if a value (name) is already in the persons array
   // The some() method works similar to the find() method, but returns a boolean
@@ -65,29 +67,37 @@ const App = () => {
     if (nameInPersons(phoneBookObject) && !numberInPersons(phoneBookObject)) {
       const person = phoneBookObject.name
       const id = persons.find(entry => entry.name === person).id
-      console.log('id that is given to update: ', id)
       window.confirm(
         `${person} is already added to phonebook, replace the old number with a new one?`
       )
       entryService
         .update(id, phoneBookObject)
         .then(returnedPhoneBookObject => {
+          setSuccessMessage(
+            `Changed the Number of ${phoneBookObject.name} to ${phoneBookObject.number}`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 3000)
           setPersons(persons.map(entry => (entry.id !== id ? entry : returnedPhoneBookObject)))
         })
         .catch(error => {
-          alert(`The person ${person} was already deleted from server`)
+          setErrorMessage(`Information of '${person}' has already been removed from server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 3000)
           setPersons(persons.filter(entry => entry.id !== id))
         })
-        setSuccessMessage(
-          `Changed the Number of ${phoneBookObject.name} to ${phoneBookObject.number}`
-        )
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 3000);
-        setNewName('')
-        setNewNumber('')
+
+      setNewName('')
+      setNewNumber('')
+
+      //TODO Succes message after delete
     } else if (nameInPersons(phoneBookObject) && numberInPersons(phoneBookObject)) {
-      alert(`The name: (${phoneBookObject.name})has already been added to the phonebook`)
+      setErrorMessage(`The name: (${phoneBookObject.name}) has already been added to the phonebook`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 3000)
       setNewName('')
       setNewNumber('')
     } else {
@@ -95,12 +105,10 @@ const App = () => {
       entryService.create(phoneBookObject).then(returnedPhoneBookObject => {
         setPersons(persons.concat(returnedPhoneBookObject))
 
-        setSuccessMessage(
-          `Added ${phoneBookObject.name}`
-        )
+        setSuccessMessage(`Added ${phoneBookObject.name}`)
         setTimeout(() => {
           setSuccessMessage(null)
-        }, 3000);
+        }, 3000)
         // To reset the values of the input fields to an empty string
         setNewName('')
         setNewNumber('')
@@ -131,9 +139,21 @@ const App = () => {
     window.confirm(`Delete ${entry.name}`)
       ? entryService
           .deleteEntry(id)
-          .then(setPersons(persons.filter(person => person !== entry)))
+
+          .then(returnedPhoneBookObject => {
+            setPersons(persons.filter(person => person !== entry))
+
+            setSuccessMessage(`Deleted ${entry.name}`)
+            setTimeout(() => {
+              setSuccessMessage(null)
+            }, 3000)
+          })
+
           .catch(error => {
-            alert(`the entry '${entry.name}' was already deleted from server`)
+            setErrorMessage(`Information of '${entry.name}' has already been removed from server`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 3000)
           })
       : console.log(`Deletion of ${entry.name} canceled`)
   }
@@ -141,7 +161,8 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification message={successMessage} />
+      <SuccessMessage message={successMessage} />
+      <ErrorMessage message={errorMessage} />
       <Searchbar value={nameFilter} onChange={handleFilterInput} />
       <h2>Add a new</h2>
       <form onSubmit={addInput}>

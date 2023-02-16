@@ -1,6 +1,6 @@
-const Notification = ({ message }) => {
+const ErrorMessage = ({ message, type }) => {
     const notificationStyle = {
-        color: 'green',
+        color: 'red',
         background: 'lightgrey',
         fontSize: 20,
         borderStyle: 'solid',
@@ -13,10 +13,10 @@ const Notification = ({ message }) => {
     }
   
     return (
-      <div style={notificationStyle} className='success'>
+      <div style={notificationStyle} className='error'>
         {message}
       </div>
     )
   }
 
-  export default Notification
+  export default ErrorMessage
