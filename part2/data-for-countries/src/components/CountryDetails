@@ -1,0 +1,10 @@
+const CountryDetails = ({name}) => {
+
+    return (
+        <div className="CountryDetails">
+            <h1>{name}</h1>
+        </div>
+    )
+}
+
+export default CountryDetails
