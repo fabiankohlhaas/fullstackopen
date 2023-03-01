@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import CountryName from './components/CountryName'
-// import CountryDetails from './components/CountryDetails'
+import CountryDetails from './components/CountryDetails.js'
 
 const App = () => {
   const [selection, setSelection] = useState('')
   const [countries, setCountries] = useState([])
-  // const [countriesToShow, setCountriesToShow] = useState([])
 
   useEffect(() => {
     console.log('fetching exchange countries...')
@@ -33,7 +32,8 @@ const App = () => {
       : countries.filter(countrie =>
           countrie.name.common.toLowerCase().includes(selection.toLowerCase())
         )
-        
+
+  console.log('contentToDisplay = ', contentToDisplay)
 
   return (
     <div>
@@ -42,16 +42,22 @@ const App = () => {
       </form>
       <div>
         {contentToDisplay.length === 1 ? (
-          //<CountryDetails name={contentToDisplay[0].name}></CountryDetails>
-          // TODO display the details of the country
-          <h1>working</h1>
+          <CountryDetails
+            key={contentToDisplay[0].ccn3 + contentToDisplay[0].cca3}
+            countryName={contentToDisplay[0].name.common}
+            capital={contentToDisplay[0].capital}
+            area={contentToDisplay[0].area}
+            languages={Object.values(contentToDisplay[0].languages)}
+            flag={contentToDisplay[0].flags.png}
+            alt={contentToDisplay[0].flags.alt}></CountryDetails>
         ) : (
           contentToDisplay.map(countrie => (
             <CountryName
               key={countrie.ccn3 + countrie.cca3}
               countryName={countrie.name.common}></CountryName>
-          )) 
-        )}{console.log('Content to dispaly = ',contentToDisplay[0])}
+          ))
+        )}
+        {console.log('Content to dispaly 0 = ', contentToDisplay[0])}
       </div>
     </div>
   )
