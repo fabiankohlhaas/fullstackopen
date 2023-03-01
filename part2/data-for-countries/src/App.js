@@ -35,6 +35,7 @@ const App = () => {
 
   console.log('contentToDisplay = ', contentToDisplay)
 
+
   return (
     <div>
       <form>
@@ -54,10 +55,12 @@ const App = () => {
           contentToDisplay.map(countrie => (
             <CountryName
               key={countrie.ccn3 + countrie.cca3}
-              countryName={countrie.name.common}></CountryName>
+              countryName={countrie.name.common}
+              setSelection={setSelection}
+              ></CountryName>
           ))
         )}
-        {console.log('Content to dispaly 0 = ', contentToDisplay[0])}
+      
       </div>
     </div>
   )
