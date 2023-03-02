@@ -1,9 +1,32 @@
 # does not need to be submitted
 /part0/01-to-03-mdn-web-basics 
 /part1/example
+/part2/example
 
 
 # dependencies
 /**/node_modules/
 node_modules/
 /home/fkohlhaas/01 Hot/fullstackopen/part1/courseinfo/node_modules
+/node_modules
+/.pnp
+.pnp.js
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.markdownlint.json
+/resources/eslint-and-prettier-setup.md
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# testing
+/coverage
+
+# production
+/build
