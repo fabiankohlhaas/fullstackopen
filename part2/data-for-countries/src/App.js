@@ -4,6 +4,7 @@ import CountryName from './components/CountryName'
 import CountryDetails from './components/CountryDetails.js'
 
 const App = () => {
+  const api_key = process.env.REACT_APP_API_KEY
   const [selection, setSelection] = useState('')
   const [countries, setCountries] = useState([])
 
@@ -35,7 +36,6 @@ const App = () => {
 
   console.log('contentToDisplay = ', contentToDisplay)
 
-
   return (
     <div>
       <form>
@@ -50,17 +50,18 @@ const App = () => {
             area={contentToDisplay[0].area}
             languages={Object.values(contentToDisplay[0].languages)}
             flag={contentToDisplay[0].flags.png}
-            alt={contentToDisplay[0].flags.alt}></CountryDetails>
+            alt={contentToDisplay[0].flags.alt}
+            lat={contentToDisplay[0].latlng[0]}
+            lng={contentToDisplay[0].latlng[1]}
+            api_key={api_key}></CountryDetails>
         ) : (
           contentToDisplay.map(countrie => (
             <CountryName
               key={countrie.ccn3 + countrie.cca3}
               countryName={countrie.name.common}
-              setSelection={setSelection}
-              ></CountryName>
+              setSelection={setSelection}></CountryName>
           ))
         )}
-      
       </div>
     </div>
   )
